@@ -9,88 +9,75 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        @keyframes nubeFlotando {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 0.9;
-            }
-            50% {
-                transform: translateY(-10px) scale(1.05);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(0) scale(1);
-                opacity: 0.9;
-            }
-        }
+         body {
+      font-family: 'Quicksand', sans-serif;
+    }
 
-        .nube {
-            position: absolute;
-            animation: nubeFlotando 4s ease-in-out infinite;
-            pointer-events: none;
-        }
+    @keyframes nubeFlotando {
+      0% { transform: translateY(0) scale(1); opacity: 0.9; }
+      50% { transform: translateY(-10px) scale(1.05); opacity: 1; }
+      100% { transform: translateY(0) scale(1); opacity: 0.9; }
+    }
 
-        @keyframes fall {
-            0% {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            30% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
+    .nube {
+      position: absolute;
+      animation: nubeFlotando 4s ease-in-out infinite;
+      pointer-events: none;
+    }
 
-        .falling-text {
-            position: absolute;
-            font-size: 0.9rem;
-            font-weight: bold;
-            animation: fall 8s linear, fadeOut 8s ease-in-out;
-            color: white;
-            pointer-events: none;
-            opacity: 1;
-        }
+    @keyframes fall {
+      0% { transform: translateY(-50px); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
 
-        @keyframes fadeOut {
-            0%, 70% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
-        }
+    .falling-text {
+      position: absolute;
+      font-size: 1rem;
+      font-weight: bold;
+      animation: fall 8s linear, fadeOut 8s ease-in-out;
+      color: white;
+      pointer-events: none;
+      opacity: 1;
+      text-shadow: 1px 1px 3px #000;
+    }
 
-        .mensaje-nube {
-            position: absolute;
-            background: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 9999px;
-            font-size: 0.85rem;
-            color: #f472b6;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            animation: fadeinout 4s ease-in-out infinite;
-            pointer-events: none;
-            opacity: 0;
-        }
+    @keyframes fadeOut {
+      0%, 70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
 
-        @keyframes fadeinout {
-            0% { opacity: 0; }
-            25% { opacity: 1; }
-            75% { opacity: 1; }
-            100% { opacity: 0; }
-        }
+    .mensaje-nube {
+      position: absolute;
+      background: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 1rem;
+      color: #f472b6;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      animation: fadeinout 4s ease-in-out infinite;
+      pointer-events: none;
+      opacity: 0;
+      white-space: nowrap;
+      text-shadow: 1px 1px 2px #aaa;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    @keyframes fadeinout {
+      0% { opacity: 0; }
+      25% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { opacity: 0; }
+    }
 
-        @media (max-width: 640px) {
-            h1, h2, p { text-align: center; }
-            .w-36 { width: 6rem; }
-        }
+    html { scroll-behavior: smooth; }
+
+    @media (max-width: 640px) {
+      h1, h2, p { text-align: center; }
+      .w-36 { width: 6rem; }
+      .falling-text, .mensaje-nube {
+        font-size: 1.1rem;
+      }
+    }
     </style>
 </head>
 
@@ -101,20 +88,21 @@
         <img src="https://pngimg.com/uploads/cloud/cloud_PNG16.png" class="nube w-24 top-10 left-4 animate-pulse" />
         <img src="https://pngimg.com/uploads/cloud/cloud_PNG16.png" class="nube w-28 top-20 right-10 animate-pulse" />
         <img src="https://pngimg.com/uploads/cloud/cloud_PNG16.png" class="nube w-20 bottom-20 left-10 animate-pulse" />
-        <img src="https://pngimg.com/uploads/cloud/cloud_PNG16.png" class="nube w-28 bottom-10 right-16 animate-pulse" />
+        <img src="https://pngimg.com/uploads/cloud/cloud_PNG16.png"
+            class="nube w-28 bottom-10 right-16 animate-pulse" />
         <div id="mensajes-nube"></div>
     </div>
 
     <!-- JS lluvia suave -->
     <script>
-        const frases = ["Perdóname 💔", "Lo siento 😢", "Te amo 💖", "Vuelve conmigo 🥺", "No me ignores 💌"];
+        const frases = ["Perdóname 💔", "Lo siento 😢", "Te amo 💖", "Soy un bobo 🥺", "No me ignores 💌"];
         let intervalId;
 
         function crearTextoCayendo() {
             const text = document.createElement("div");
             text.classList.add("falling-text");
             text.textContent = frases[Math.floor(Math.random() * frases.length)];
-            text.style.left = Math.random() * 100 + "vw";
+            text.style.left = Math.random() * 90 + "vw";
             text.style.top = "-30px";
             document.getElementById("main-section")?.appendChild(text);
             setTimeout(() => text.remove(), 9000);
@@ -140,8 +128,8 @@
             msg.className = "mensaje-nube";
             const mensajes = ["Di que sí 💘", "Perdónameee :(", "No seas mala 😭", "Mi corazoncito 💔"];
             msg.textContent = mensajes[Math.floor(Math.random() * mensajes.length)];
-            msg.style.top = Math.random() * 90 + "%";
-            msg.style.left = Math.random() * 90 + "%";
+            msg.style.top = Math.random() * 90 + "vh";
+            msg.style.left = Math.random() * 90 + "vw";
             document.getElementById("mensajes-nube")?.appendChild(msg);
             setTimeout(() => msg.remove(), 4000);
         }
@@ -157,22 +145,29 @@
     </audio>
 
     <!-- Sección principal -->
-    <section id="main-section" class="flex flex-col items-center justify-center min-h-screen text-center px-4 relative z-10">
+    <section id="main-section"
+        class="flex flex-col items-center justify-center min-h-screen text-center px-4 relative z-10">
         <h1 class="text-3xl font-bold text-white drop-shadow mb-8">¿Me puedes perdonar? :c</h1>
         <div class="space-x-4">
-            <button id="yesBtn" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-xl shadow-xl transition">Sí</button>
-            <button id="noBtn" class="bg-gray-100 text-black font-bold py-2 px-6 rounded-xl shadow-lg transition absolute">No</button>
+            <button id="yesBtn"
+                class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2 px-6 rounded-xl shadow-xl transition">Sí</button>
+            <button id="noBtn"
+                class="bg-gray-100 text-black font-bold py-2 px-6 rounded-xl shadow-lg transition absolute">No</button>
         </div>
     </section>
 
     <!-- Sección amor sin nubes ni lluvia -->
-    <section id="seccionAmor" class="hidden min-h-screen flex flex-col items-center justify-center text-center px-6 bg-pink-100">
+    <section id="seccionAmor"
+        class="hidden min-h-screen flex flex-col items-center justify-center text-center px-6 bg-pink-100">
         <h2 class="text-2xl sm:text-3xl text-pink-700 font-bold mb-4">¡Sabías que me ibas a perdonar uwu!</h2>
         <p class="text-lg sm:text-xl text-pink-600 font-medium mb-6">Mi chicaa más linda &lt;33 💖</p>
         <div class="flex flex-wrap justify-center gap-4">
-            <img loading="lazy" src="https://media.tenor.com/9aNFYFKJijEAAAAM/kitty-lol-kittylove.gif" alt="Hello Kitty" class="w-36 rounded-xl shadow-lg" />
-            <img loading="lazy" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Hello Kitty Love" class="w-36 rounded-xl shadow-lg" />
-            <img loading="lazy" src="https://i.pinimg.com/originals/81/8c/e0/818ce04e67b6735edbc200a717c5faef.gif" alt="Hello Kitty Smile" class="w-36 rounded-xl shadow-lg" />
+            <img loading="lazy" src="https://media.tenor.com/9aNFYFKJijEAAAAM/kitty-lol-kittylove.gif" alt="Hello Kitty"
+                class="w-36 rounded-xl shadow-lg" />
+            <img loading="lazy" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Hello Kitty Love"
+                class="w-36 rounded-xl shadow-lg" />
+            <img loading="lazy" src="https://i.pinimg.com/originals/81/8c/e0/818ce04e67b6735edbc200a717c5faef.gif"
+                alt="Hello Kitty Smile" class="w-36 rounded-xl shadow-lg" />
         </div>
     </section>
 
@@ -206,7 +201,7 @@
             detenerLluviaSuave();
             seccionAmor.scrollIntoView({ behavior: "smooth" });
 
-            const duration = 6000;
+            const duration = 3000;
             const end = Date.now() + duration;
             (function frame() {
                 confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
@@ -216,11 +211,14 @@
         });
 
         noBtn.addEventListener("mouseover", () => {
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 100;
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
         });
     </script>
 </body>
+
 </html>
